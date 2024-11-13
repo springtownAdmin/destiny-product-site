@@ -1,26 +1,20 @@
-import React from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import './App.css'
-import ProductCart from './components/product-cart';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ProductPage from './components/product-page';
+import NotFound from './components/not-found';
 
 export default function App() {
 
   return (
-
-    <>
-    
-      <div className='relative w-full'>
-
-        <ProductCart />
-
-        <ToastContainer />
-        
-      </div>
-
-    </>
-
-
+    <Router>
+        <Routes>
+            {/* Define a route with a dynamic parameter */}
+            <Route path="/:pageId" element={<ProductPage />} />
+            <Route path="/not-found" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
+        </Routes>
+    </Router>
   );
 
 }
