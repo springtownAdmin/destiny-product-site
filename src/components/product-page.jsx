@@ -11,7 +11,7 @@ export default function ProductPage() {
 
   const [showLoader, setShowLoader] = useState(false);
   const [pageData, setPageData] = useState(null);
-  const { pageId } = useParams();
+  const { templateId, pageId } = useParams();
   const navigate = useNavigate();
 
   // 146f9c8f-291e-4318-aa07-119e65bc16e6
@@ -27,13 +27,23 @@ export default function ProductPage() {
   
         setShowLoader(true);
 
+
         // Check if cached data exists
-        const cachedData = localStorage.getItem('pageData');
-        if (cachedData) {
-          setPageData(JSON.parse(cachedData));
-          setShowLoader(false);
-          return;
-        }
+        // const cachedData = localStorage.getItem('pageData');
+        // if (cachedData) {
+
+        //     const result = JSON.parse(cachedData);
+
+        //     if (result.page_id === pageId) {
+
+        //         setPageData(JSON.parse(cachedData));
+        //         setShowLoader(false);
+        //         return;
+
+        //     }
+            
+        // }
+
 
         const resp = await PAGE_URL.get(`/get-page-info?page_id=${pageId}`);
         const result = resp.data.result;
@@ -43,12 +53,11 @@ export default function ProductPage() {
             return;
         }
 
-        console.log(result.data);
         setPageData(result.data);
 
         // Cache the data
-        localStorage.setItem('pageData', JSON.stringify(result.data));
-        setPageData(result.data);
+        // localStorage.setItem('pageData', JSON.stringify(result.data));
+        // setPageData(result.data);
   
       } catch (e) {
   
