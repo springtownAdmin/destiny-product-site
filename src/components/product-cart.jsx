@@ -296,10 +296,13 @@ const ProductCart = (props) => {
     const image01 = "https://cdn.shopify.com/s/files/1/0690/0468/9565/files/blueshirt.jpg?v=1729298939"
 
     const { images = [ image01 ] } = props;
-    const { productItem = "gid://shopify/Product/8477048995997" } = props;
+    const { product_id = "8477048995997" } = props;
     // const { images = [ image01, image02, image03, image04, image05 ] } = props;
-    const { variantId = 'gid://shopify/ProductVariant/46075169931421' } = props;
+    const { variant_id = '46075169931421' } = props;
     // const { variantId = "gid://shopify/ProductVariant/46085726306461" } = props;
+
+    const productItem = `gid://shopify/Product/${product_id}`;
+    const variantId = `gid://shopify/ProductVariant/${variant_id}`;
 
     const [selectedImage, setSelectedImage] = useState(0);
     const [selectedImage2, setSelectedImage2] = useState(0);
