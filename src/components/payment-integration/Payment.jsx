@@ -9,18 +9,6 @@ const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY)
 
 const Payment = ({ productId, amount, product_title, variant_id }) => {
 
-  // const [stripePromise, setStripePromise] = useState(null);
-
-  useEffect(() => {
-        
-        // Load the Stripe object with the publishable key
-        // fetch("https://destiny-server-nhyk.onrender.com/config").then(async (r) => {
-        //   const { publishableKey } = await r.json();
-        //   setStripePromise(loadStripe(publishableKey));
-        // });
-
-  }, []);
-
   if (!stripePromise) {
 
     return (
