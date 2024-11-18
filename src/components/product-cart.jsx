@@ -350,7 +350,7 @@ const ProductCart = (props) => {
                     {/* Product Images */}
                     <div className="space-y-4">
                         <div className="bg-[#e75d8e] rounded-lg overflow-hidden scrollbar-hide">
-                            <div className="relative aspect-square" onClick={() => setIsOpen(true)}>
+                            <div className="relative aspect-square">
                                 <img
                                     src={images[selectedImage]}
                                     alt="Botanical Soda Variety Pack"
@@ -386,6 +386,7 @@ const ProductCart = (props) => {
                             <h2 className="text-2xl font-serif font-bold">{product_title}</h2>
                             <div className="text-xl font-serif font-bold text-nowrap">US ${price}</div>
                         </div>
+                        <p className="font-light text-justify">{description}</p>
 
                         {/* Purchase Options */}
                         <div className="space-y-4">
