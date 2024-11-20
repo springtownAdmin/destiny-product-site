@@ -10,7 +10,7 @@ export default function App() {
     <Router>
         <Routes>
             {/* Define a route with a dynamic parameter */}
-            <Route path="/:templateId/:pageId" element={<ProductPage />} />
+            <Route path="/:variantId" element={<ProductPage />} />
             <Route path="/not-found" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
         </Routes>

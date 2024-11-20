@@ -11,13 +11,13 @@ export default function ProductPage() {
 
   const [showLoader, setShowLoader] = useState(false);
   const [pageData, setPageData] = useState(null);
-  const { templateId, pageId } = useParams();
+  const { variantId } = useParams();
   const navigate = useNavigate();
 
   // 146f9c8f-291e-4318-aa07-119e65bc16e6
 
   // Regular expression to validate UUID
-  const isValidUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  // const isValidUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
   useEffect(() => {
 
@@ -45,7 +45,7 @@ export default function ProductPage() {
         // }
 
 
-        const resp = await PAGE_URL.get(`/get-page-info?page_id=${pageId}`);
+        const resp = await PAGE_URL.get(`/get-page-info?variant_id=${variantId}`);
         const result = resp.data.result;
 
         if (result.data === null) {
@@ -61,20 +61,23 @@ export default function ProductPage() {
   
       } catch (e) {
   
-        toast.error('Something went wrong!')
+        toast.error('Something went wrong!');
+        console.log(e.message);
   
       } finally {
 
-        setShowLoader(false);
+        setTimeout(() => {
+          setShowLoader(false);
+        }, 500);
 
       }
 
     };
 
-    if (!isValidUUID.test(pageId)) {
-        navigate('/not-found'); // Redirect to "Not Found" page
-        return;
-    }
+    // if (!isValidUUID.test(variantId)) {
+    //     navigate('/not-found'); // Redirect to "Not Found" page
+    //     return;
+    // }
 
     setPageDataToSite();
 
@@ -87,7 +90,7 @@ export default function ProductPage() {
 
     <MainLoader show={showLoader}>
 
-        {memoizedPageData !== null ? <div className='relative w-full'><ProductCart { ...memoizedPageData } /></div> : <PleaseWait />}
+        {pageData !== null ? <div className='relative w-full'><ProductCart { ...pageData } /></div> : <PleaseWait />}
 
         <ToastContainer />
 
