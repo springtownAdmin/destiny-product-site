@@ -29,8 +29,13 @@ const ShopPayButton = ({ variantId, quantity = 1 }) => {
             if (typeof sessionStorage !== 'undefined') {
 
                 const getPageId = sessionStorage.getItem('page_id');
-                await PAGE_URL.post('/set-metrics', { page_id: getPageId, type: 'conversions' });
+                const conversions = sessionStorage.getItem('conversions');
 
+                if (!conversions) {
+                    sessionStorage.setItem('conversions', true);
+                    await PAGE_URL.post('/set-metrics', { page_id: getPageId, type: 'conversions' });
+                }
+                
             }
 
             // Redirect to Shop Pay

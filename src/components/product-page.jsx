@@ -50,7 +50,11 @@ export default function ProductPage() {
             sessionStorage.setItem('page_id', result.data.page_id);
             sessionStorage.setItem('variant_id', result.data.variant_id);
             // add one visitor and update the DB
-            await PAGE_URL.post('/set-metrics', { page_id: result.data.page_id, type: 'visitors' });
+            const resp = await PAGE_URL.post('/set-metrics', { page_id: result.data.page_id, type: 'visitors' });
+
+            if (resp.data.result.data === null) {
+              sessionStorage.clear();
+            }
             
           }
 
