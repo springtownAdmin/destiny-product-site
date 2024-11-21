@@ -55,7 +55,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
           } else {
             event.complete('success');
 
-            if (typeof sessionStorage !== 'undefined' || typeof sessionStorage !== 'null') {
+            if (typeof sessionStorage !== 'undefined') {
 
               const getPageId = sessionStorage.getItem('page_id');
               await PAGE_URL.post('/set-metrics', { page_id: getPageId, type: 'conversions' });

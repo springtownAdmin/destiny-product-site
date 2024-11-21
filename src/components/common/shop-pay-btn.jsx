@@ -26,7 +26,7 @@ const ShopPayButton = ({ variantId, quantity = 1 }) => {
 
             const updatedCheckout = await client.checkout.addLineItems(checkout.id, lineItemsToAdd);
 
-            if (typeof sessionStorage !== 'undefined' || typeof sessionStorage !== 'null') {
+            if (typeof sessionStorage !== 'undefined') {
 
                 const getPageId = sessionStorage.getItem('page_id');
                 await PAGE_URL.post('/set-metrics', { page_id: getPageId, type: 'conversions' });
