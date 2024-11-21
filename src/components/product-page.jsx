@@ -6,6 +6,7 @@ import { PAGE_URL } from '../helper/constants';
 import { MainLoader } from './common';
 import PleaseWait from './please-wait-animation';
 import { useParams, useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function ProductPage() {
 
@@ -13,6 +14,7 @@ export default function ProductPage() {
   const [pageData, setPageData] = useState(null);
   const { variantId } = useParams();
   const navigate = useNavigate();
+  const [hasClickedOnBuyBtn, setClickedOnBuyBtn] = useState(false);
 
   // 146f9c8f-291e-4318-aa07-119e65bc16e6
 
@@ -24,26 +26,8 @@ export default function ProductPage() {
     const setPageDataToSite = async () => {
 
       try {
-  
+
         setShowLoader(true);
-
-
-        // Check if cached data exists
-        // const cachedData = localStorage.getItem('pageData');
-        // if (cachedData) {
-
-        //     const result = JSON.parse(cachedData);
-
-        //     if (result.page_id === pageId) {
-
-        //         setPageData(JSON.parse(cachedData));
-        //         setShowLoader(false);
-        //         return;
-
-        //     }
-            
-        // }
-
 
         const resp = await PAGE_URL.get(`/get-page-info?variant_id=${variantId}`);
         const result = resp.data.result;
@@ -55,9 +39,23 @@ export default function ProductPage() {
 
         setPageData(result.data);
 
-        // Cache the data
-        // localStorage.setItem('pageData', JSON.stringify(result.data));
-        // setPageData(result.data);
+        if (typeof sessionStorage !== 'undefined') {
+
+          const getId = sessionStorage.getItem('uid');
+
+          if (!getId) {
+
+            const uid = uuidv4();
+            sessionStorage.setItem('uid', uid);
+            sessionStorage.setItem('page_id', result.data.page_id);
+            sessionStorage.setItem('variant_id', result.data.variant_id);
+            // add one visitor and update the DB
+            await PAGE_URL.post('/set-metrics', { page_id: result.data.page_id, type: 'visitors' });
+            
+          }
+
+        }
+
   
       } catch (e) {
   
@@ -82,9 +80,6 @@ export default function ProductPage() {
     setPageDataToSite();
 
   }, []);
-
-  // Use `useMemo` to memoize the `pageData` object
-  const memoizedPageData = useMemo(() => pageData, [pageData]);
 
   return (
 

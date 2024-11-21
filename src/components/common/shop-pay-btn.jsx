@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import client from './../../shopifyClient';
 import Loader from './loader';
+import { PAGE_URL } from '../../helper/constants';
 
 const ShopPayButton = ({ variantId, quantity = 1 }) => {
     
@@ -24,6 +25,13 @@ const ShopPayButton = ({ variantId, quantity = 1 }) => {
             ];
 
             const updatedCheckout = await client.checkout.addLineItems(checkout.id, lineItemsToAdd);
+
+            if (typeof sessionStorage !== 'undefined' || typeof sessionStorage !== 'null') {
+
+                const getPageId = sessionStorage.getItem('page_id');
+                await PAGE_URL.post('/set-metrics', { page_id: getPageId, type: 'conversions' });
+
+            }
 
             // Redirect to Shop Pay
             // alert(`${checkout.webUrl}&shop_pay=1`);

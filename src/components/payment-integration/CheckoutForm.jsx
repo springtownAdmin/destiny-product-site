@@ -3,7 +3,7 @@ import { useStripe, PaymentRequestButtonElement } from '@stripe/react-stripe-js'
 import axios from 'axios';
 import { SERVER_URL } from '../../helper/constants';
 
-const CheckoutForm = ({ amount = 0.01, productId, product_title, quantity = 1, variant_id = 46075169931421 }) => {
+const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id = 46075169931421 }) => {
 
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
@@ -54,6 +54,14 @@ const CheckoutForm = ({ amount = 0.01, productId, product_title, quantity = 1, v
             console.error('Payment failed:', error);
           } else {
             event.complete('success');
+
+            if (typeof sessionStorage !== 'undefined' || typeof sessionStorage !== 'null') {
+
+              const getPageId = sessionStorage.getItem('page_id');
+              await PAGE_URL.post('/set-metrics', { page_id: getPageId, type: 'conversions' });
+
+            }
+
             setMessage('Payment successful! Thank you for your purchase.');
             setSuccess(true);
             // Additional actions on success
