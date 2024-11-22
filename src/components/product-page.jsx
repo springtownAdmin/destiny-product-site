@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductCart from './product-cart';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,6 +7,7 @@ import { MainLoader } from './common';
 import PleaseWait from './please-wait-animation';
 import { useParams, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import useStorage from '../hooks/useStorage';
 
 export default function ProductPage() {
 
@@ -14,7 +15,7 @@ export default function ProductPage() {
   const [pageData, setPageData] = useState(null);
   const { variantId } = useParams();
   const navigate = useNavigate();
-  const [hasClickedOnBuyBtn, setClickedOnBuyBtn] = useState(false);
+  const { getItem, getItems, setItem, setItems, clearAll } = useStorage();
 
   // 146f9c8f-291e-4318-aa07-119e65bc16e6
 
@@ -29,34 +30,39 @@ export default function ProductPage() {
 
         setShowLoader(true);
 
-        const resp = await PAGE_URL.get(`/get-page-info?variant_id=${variantId}`);
-        const result = resp.data.result;
+        const getPageData = getItems({ key: 'pageData' });
+        const getId = getItem({ key: 'uid' });
 
-        if (result.data === null) {
-            navigate('/not-found'); // Redirect to "Not Found" page
-            return;
+        // console.log(getPageData);
+
+        if (!getPageData) {
+
+          const resp = await PAGE_URL.get(`/get-page-info?variant_id=${variantId}`);
+          const result = resp.data.result;
+  
+          if (result.data === null) {
+              navigate('/not-found'); // Redirect to "Not Found" page
+              return;
+          }
+
+          setPageData(result.data);
+          setItems({ key: 'pageData', data: result.data });
+
+        } else {
+          
+          setPageData(getPageData);
+
         }
 
-        setPageData(result.data);
+        if (!getId) {
 
-        if (typeof sessionStorage !== 'undefined') {
+          const uid = uuidv4();
+          setItem({ key: 'uid', data: uid });
 
-          const getId = sessionStorage.getItem('uid');
+          const resp = await PAGE_URL.post('/set-metrics', { page_id: result.data.page_id, type: 'visitors' });
 
-          if (!getId) {
-
-            const uid = uuidv4();
-            sessionStorage.setItem('uid', uid);
-            sessionStorage.setItem('page_id', result.data.page_id);
-            sessionStorage.setItem('variant_id', result.data.variant_id);
-            // add one visitor and update the DB
-            const resp = await PAGE_URL.post('/set-metrics', { page_id: result.data.page_id, type: 'visitors' });
-
-            if (resp.data.result.data === null) {
-              sessionStorage.clear();
-            }
-            
-          }
+          if (resp.data.result.data === null)
+            clearAll();
 
         }
 
@@ -68,9 +74,9 @@ export default function ProductPage() {
   
       } finally {
 
-        setTimeout(() => {
-          setShowLoader(false);
-        }, 500);
+          setTimeout(() => {
+            setShowLoader(false);
+          }, getItem('uid') ? 0 : 500);
 
       }
 
@@ -81,7 +87,7 @@ export default function ProductPage() {
     //     return;
     // }
 
-    setPageDataToSite();
+      setPageDataToSite();
 
   }, []);
 
