@@ -8,7 +8,7 @@ import useStorage from '../../hooks/useStorage';
 const ShopPayButton = ({ variantId, quantity = 1 }) => {
     
     const [showLoader, setShowLoader] = useState(false);
-    const { getItem, setItem } = useStorage();
+    const { getItems, getItem, setItem } = useStorage();
 
     const handleShopPayCheckout = async () => {
 
@@ -28,7 +28,7 @@ const ShopPayButton = ({ variantId, quantity = 1 }) => {
 
             const updatedCheckout = await client.checkout.addLineItems(checkout.id, lineItemsToAdd);
 
-            const getPageData = getItem({ key: 'pageData' });
+            const getPageData = getItems({ key: 'pageData' });
             const conversions = getItem({ key: 'conversions' });
 
             if (getPageData.page_id && !conversions) {

@@ -10,7 +10,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
   const [isPaymentRequestAvailable, setIsPaymentRequestAvailable] = useState(false);
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
-  const { getItem, setItem } = useStorage();
+  const { getItems, getItem, setItem } = useStorage();
 
   useEffect(() => {
     if (stripe) {
@@ -56,7 +56,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
           } else {
             event.complete('success');
 
-            const getPageData = getItem({ key: 'pageData' });
+            const getPageData = getItems({ key: 'pageData' });
             const conversions = getItem({ key: 'conversions' });
 
             if (getPageData.page_id && !conversions) {
