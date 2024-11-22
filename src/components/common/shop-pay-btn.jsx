@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import client from './../../shopifyClient';
 import Loader from './loader';
 import { PAGE_URL } from '../../helper/constants';
+import useStorage from '../../hooks/useStorage';
 
 const ShopPayButton = ({ variantId, quantity = 1 }) => {
     
     const [showLoader, setShowLoader] = useState(false);
+    const { getItem, setItem } = useStorage();
 
     const handleShopPayCheckout = async () => {
 
@@ -26,16 +28,14 @@ const ShopPayButton = ({ variantId, quantity = 1 }) => {
 
             const updatedCheckout = await client.checkout.addLineItems(checkout.id, lineItemsToAdd);
 
-            if (typeof sessionStorage !== 'undefined') {
+            const getPageData = getItem({ key: 'pageData' });
+            const conversions = getItem({ key: 'conversions' });
 
-                const getPageId = sessionStorage.getItem('page_id');
-                const conversions = sessionStorage.getItem('conversions');
+            if (getPageData.page_id && !conversions) {
 
-                if (!conversions) {
-                    sessionStorage.setItem('conversions', true);
-                    await PAGE_URL.post('/set-metrics', { page_id: getPageId, type: 'conversions' });
-                }
-                
+              setItem({ key: 'conversions', data: true });
+              await PAGE_URL.post('/set-metrics', { page_id: getPageData.page_id, type: 'conversions' });
+
             }
 
             // Redirect to Shop Pay

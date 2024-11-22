@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useStripe, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
-import axios from 'axios';
 import { SERVER_URL } from '../../helper/constants';
+import useStorage from '../../hooks/useStorage';
 
 const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id = 46075169931421 }) => {
 
@@ -10,6 +10,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
   const [isPaymentRequestAvailable, setIsPaymentRequestAvailable] = useState(false);
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
+  const { getItem, setItem } = useStorage();
 
   useEffect(() => {
     if (stripe) {
@@ -55,15 +56,13 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
           } else {
             event.complete('success');
 
-            if (typeof sessionStorage !== 'undefined') {
+            const getPageData = getItem({ key: 'pageData' });
+            const conversions = getItem({ key: 'conversions' });
 
-              const getPageId = sessionStorage.getItem('page_id');
-              const conversions = sessionStorage.getItem('conversions');
+            if (getPageData.page_id && !conversions) {
 
-              if (!conversions) {
-                  sessionStorage.setItem('conversions', true);
-                  await PAGE_URL.post('/set-metrics', { page_id: getPageId, type: 'conversions' });
-              }
+              setItem({ key: 'conversions', data: true });
+              await PAGE_URL.post('/set-metrics', { page_id: getPageData.page_id, type: 'conversions' });
 
             }
 
