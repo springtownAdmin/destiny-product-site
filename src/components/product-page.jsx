@@ -31,7 +31,6 @@ export default function ProductPage() {
         setShowLoader(true);
 
         const getPageData = getItems({ key: 'pageData' });
-        const getId = getItem({ key: 'uid' });
 
         // console.log(getPageData);
 
@@ -47,6 +46,15 @@ export default function ProductPage() {
 
           setPageData(result.data);
           setItems({ key: 'pageData', data: result.data });
+  
+          const uid = uuidv4();
+          setItem({ key: 'uid', data: uid });
+
+          const resp2 = await PAGE_URL.post('/set-metrics', { page_id: result.data.page_id, type: 'visitors' });
+
+          if (resp2.data.result.data === null)
+            clearAll();
+  
 
         } else {
           
@@ -54,19 +62,6 @@ export default function ProductPage() {
 
         }
 
-        if (!getId) {
-
-          const uid = uuidv4();
-          setItem({ key: 'uid', data: uid });
-
-          const resp = await PAGE_URL.post('/set-metrics', { page_id: result.data.page_id, type: 'visitors' });
-
-          if (resp.data.result.data === null)
-            clearAll();
-
-        }
-
-  
       } catch (e) {
   
         toast.error('Something went wrong!');
