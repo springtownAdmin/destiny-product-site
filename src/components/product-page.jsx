@@ -8,7 +8,7 @@ import PleaseWait from './please-wait-animation';
 import { useParams, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import useStorage from '../hooks/useStorage';
-import { logger, logToServer } from '../logger';
+import { logger } from '../logger';
 
 export default function ProductPage() {
 
@@ -32,17 +32,17 @@ export default function ProductPage() {
         setShowLoader(true);
 
         const getPageData = getItems({ key: 'pageData' });
-        // logger.info("===============================================>\n");
-        logger.info("PAGE_INFO_BASED_ON_VARIANT_ID\n");
-        // logger.info("===============================================>\n");
-        // logger.info('helloworld');
-        // logger.info("===============================================>\n");
 
         if (!getPageData) {
 
           const resp = await PAGE_URL.get(`/get-page-info?variant_id=${variantId}`);
           const result = resp.data.result;
 
+          logger.info("===============================================>\n");
+          logger.info("PAGE_INFO_BASED_ON_VARIANT_ID\n");
+          logger.info("===============================================>\n");
+          logger.info(result);
+          logger.info("===============================================>\n");
   
           if (result.data === null) {
               navigate('/not-found'); // Redirect to "Not Found" page
@@ -56,6 +56,12 @@ export default function ProductPage() {
           setItem({ key: 'uid', data: uid });
 
           const resp2 = await PAGE_URL.post('/set-metrics', { page_id: result.data.page_id, type: 'visitors' });
+
+          logger.info("===============================================>\n");
+          logger.info("VISITORS_METRICS\n");
+          logger.info("===============================================>\n");
+          logger.info(resp2.data);
+          logger.info("===============================================>\n");
 
           if (resp2.data.result.data === null)
             clearAll();
@@ -71,6 +77,11 @@ export default function ProductPage() {
   
         toast.error('Something went wrong!');
         console.log(e.message);
+        logger.info("===============================================>\n");
+        logger.info("ERROR_WHILE_FETCHING_PAGE_INFO_AND_METRICES\n");
+        logger.info("===============================================>\n");
+        logger.error(e.message);
+        logger.info("===============================================>\n");
   
       } finally {
 

@@ -7,14 +7,6 @@ export const logToServer = async (level, message, meta = {}) => {
 
         await SERVER_URL.post('/api/logs', { level, message, meta });
 
-        // await fetch('/api/logs', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({ level, message, meta }),
-        // });
-
     } catch (error) {
 
         console.error('Failed to send log to server:', error);

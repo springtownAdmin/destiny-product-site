@@ -15,8 +15,15 @@ const ShopPayButton = ({ variantId, quantity = 1 }) => {
         try {
 
             setShowLoader(true);
+
             // Create a new checkout
             const checkout = await client.checkout.create();
+
+            logger.info("===============================================>\n");
+            logger.info("CHECKOUT_CREATION_OBJECT\n");
+            logger.info("===============================================>\n");
+            logger.info(checkout);
+            logger.info("===============================================>\n");
 
             // Add the selected variant to the checkout
             const lineItemsToAdd = [
@@ -28,22 +35,38 @@ const ShopPayButton = ({ variantId, quantity = 1 }) => {
 
             const updatedCheckout = await client.checkout.addLineItems(checkout.id, lineItemsToAdd);
 
+            logger.info("===============================================>\n");
+            logger.info("CHECKOUT_WHILE_ADDING_QUANTITY_AND_VARIANTID\n");
+            logger.info("===============================================>\n");
+            logger.info(updatedCheckout);
+            logger.info("===============================================>\n");
+
             const getPageData = getItems({ key: 'pageData' });
             const conversions = getItem({ key: 'conversions' });
 
             if (getPageData.page_id && !conversions) {
 
               setItem({ key: 'conversions', data: true });
-              await PAGE_URL.post('/set-metrics', { page_id: getPageData.page_id, type: 'conversions' });
+              const resp = await PAGE_URL.post('/set-metrics', { page_id: getPageData.page_id, type: 'conversions' });
+
+              logger.info("===============================================>\n");
+              logger.info("CALCULATING_CONVERSIONS_ON_BUY_NOW_BUTTON\n");
+              logger.info("===============================================>\n");
+              logger.info(resp.data);
+              logger.info("===============================================>\n");
 
             }
 
             // Redirect to Shop Pay
-            // alert(`${checkout.webUrl}&shop_pay=1`);
             window.location.href = updatedCheckout.webUrl;
 
         } catch (error) {
 
+            logger.info("===============================================>\n");
+            logger.info("ERROR_WHILE_CREATING_SHOPPAY_CHECKOUT\n");
+            logger.info("===============================================>\n");
+            logger.error(error.message);
+            logger.info("===============================================>\n");
             console.error('Error initiating Shop Pay checkout:', error);
 
         } finally {
