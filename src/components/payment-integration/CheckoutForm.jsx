@@ -25,6 +25,15 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
         requestPayerName: true,
         requestPayerEmail: true,
         requestShipping: true,
+        shippingOptions: [
+          // The first shipping option in this list appears as the default
+          {
+            id: 'free-shipping',
+            label: 'Free shipping',
+            detail: 'Arrives in 5 to 7 days',
+            amount: 0,
+          },
+        ],
       });
       // Check if Payment Request is available
       pr.canMakePayment().then((result) => {
