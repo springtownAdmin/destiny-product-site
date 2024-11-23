@@ -8,6 +8,7 @@ import PleaseWait from './please-wait-animation';
 import { useParams, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import useStorage from '../hooks/useStorage';
+import { logger, logToServer } from '../logger';
 
 export default function ProductPage() {
 
@@ -31,13 +32,17 @@ export default function ProductPage() {
         setShowLoader(true);
 
         const getPageData = getItems({ key: 'pageData' });
-
-        // console.log(getPageData);
+        // logger.info("===============================================>\n");
+        logger.info("PAGE_INFO_BASED_ON_VARIANT_ID\n");
+        // logger.info("===============================================>\n");
+        // logger.info('helloworld');
+        // logger.info("===============================================>\n");
 
         if (!getPageData) {
 
           const resp = await PAGE_URL.get(`/get-page-info?variant_id=${variantId}`);
           const result = resp.data.result;
+
   
           if (result.data === null) {
               navigate('/not-found'); // Redirect to "Not Found" page
