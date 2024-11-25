@@ -4,6 +4,7 @@ import { RiCloseLine } from "react-icons/ri";
 import { TbExternalLink } from "react-icons/tb";
 import Payment from './payment-integration/Payment';
 import { ShopPayButton } from './common';
+import ReviewSection from './reviews';
 
 const BackDrop = ({ isOpen, setIsOpen }) => {
 
@@ -382,64 +383,76 @@ const ProductCart = (props) => {
 
                     {/* Product Details */}
                     <div className="space-y-6">
+
                         <div className="flex justify-between items-center">
                             <h2 className="text-2xl font-serif font-bold">{product_title}</h2>
                             <div className="text-xl font-serif font-bold text-nowrap">US ${price}</div>
                         </div>
+
                         <p className="font-light text-justify">{description}</p>
 
-                        {/* Purchase Options */}
-                        <div className="space-y-4">
-                        <h3 className="text-sm font-medium text-gray-500">Purchase Option</h3>
-                        <div className="space-y-3">
-                            {/* <label className={`flex items-center justify-between border rounded-lg p-4 cursor-pointer transition-colors
-                            ${purchaseOption === 'subscribe' ? 'border-[#e75d8e] bg-pink-50' : 'border-gray-200'}`}>
-                            <div className="flex items-center space-x-2">
-                                <input
-                                type="radio"
-                                name="purchase-option"
-                                value="subscribe"
-                                checked={purchaseOption === 'subscribe'}
-                                onChange={(e) => setPurchaseOption(e.target.value)}
-                                className="w-4 h-4 text-[#e75d8e] border-gray-300 focus:ring-[#e75d8e]"
-                                />
-                                <span>Subscribe - Save $6</span>
+                        <div className='fixed md:static bottom-0 bg-white md:bg-transparent p-2 left-0 md:p-0 w-full'>
+
+                            {/* Purchase Options */}
+                            <div className="space-y-4 mb-3">
+                                <h3 className="text-sm font-medium text-gray-500">Purchase Option</h3>
+                                <div className="space-y-3">
+                                    {/* <label className={`flex items-center justify-between border rounded-lg p-4 cursor-pointer transition-colors
+                                    ${purchaseOption === 'subscribe' ? 'border-[#e75d8e] bg-pink-50' : 'border-gray-200'}`}>
+                                    <div className="flex items-center space-x-2">
+                                        <input
+                                        type="radio"
+                                        name="purchase-option"
+                                        value="subscribe"
+                                        checked={purchaseOption === 'subscribe'}
+                                        onChange={(e) => setPurchaseOption(e.target.value)}
+                                        className="w-4 h-4 text-[#e75d8e] border-gray-300 focus:ring-[#e75d8e]"
+                                        />
+                                        <span>Subscribe - Save $6</span>
+                                    </div>
+                                    <span className="font-medium">$48</span>
+                                    </label> */}
+
+                                    <label className={`flex items-center justify-between border rounded-lg p-4 cursor-pointer transition-colors
+                                        ${purchaseOption === 'one-time' ? 'border-[#e75d8e] bg-pink-50' : 'border-gray-200'}`}>
+                                        <div className="flex items-center space-x-2">
+                                            <input
+                                                type="radio"
+                                                name="purchase-option"
+                                                value="one-time"
+                                                checked={purchaseOption === 'one-time'}
+                                                onChange={(e) => setPurchaseOption(e.target.value)}
+                                                className="w-4 h-4 text-[#e75d8e] border-gray-300 focus:ring-[#e75d8e]"
+                                            />
+                                            <span className='font-serif'>One-Time Purchase</span>
+                                        </div>
+                                        <span className="font-medium font-serif">${price}</span>
+                                    </label>
+
+                                </div>
                             </div>
-                            <span className="font-medium">$48</span>
-                            </label> */}
 
-                            <label className={`flex items-center justify-between border rounded-lg p-4 cursor-pointer transition-colors
-                            ${purchaseOption === 'one-time' ? 'border-[#e75d8e] bg-pink-50' : 'border-gray-200'}`}>
-                            <div className="flex items-center space-x-2">
-                                <input
-                                    type="radio"
-                                    name="purchase-option"
-                                    value="one-time"
-                                    checked={purchaseOption === 'one-time'}
-                                    onChange={(e) => setPurchaseOption(e.target.value)}
-                                    className="w-4 h-4 text-[#e75d8e] border-gray-300 focus:ring-[#e75d8e]"
-                                />
-                                <span className='font-serif'>One-Time Purchase</span>
+                            {/* Add to Cart Button */}
+                            {/* <button onClick={handleCart} className="w-full py-3 px-4 bg-pink-500 text-white rounded-lg font-medium 
+                                hover:bg-pink-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Add to cart
+                            </button> */}
+
+                            <div className='flex gap-2 md:block w-full'>
+                                <ShopPayButton variantId={variantId} />
+                                <Payment productId={productItem} product_title={product_title} amount={parseFloat(price).toFixed(2)} variant_id={variantId} />
                             </div>
-                            <span className="font-medium font-serif">${price}</span>
-                            </label>
-                        </div>
+
                         </div>
 
-                        {/* Add to Cart Button */}
-                        {/* <button onClick={handleCart} className="w-full py-3 px-4 bg-pink-500 text-white rounded-lg font-medium 
-                            hover:bg-pink-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            Add to cart
-                        </button> */}
-
-                        <ShopPayButton variantId={variantId} />
-
-                        <Payment productId={productItem} product_title={product_title} amount={parseFloat(price).toFixed(2)} variant_id={variantId} />
 
                     </div>
 
                 </div>
+
+                <ReviewSection />
+
 
             </main>
 
