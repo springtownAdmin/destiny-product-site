@@ -6,7 +6,7 @@ import { PAGE_URL } from '../../helper/constants';
 import useStorage from '../../hooks/useStorage';
 
 const ShopPayButton = ({ variantId, quantity = 1 }) => {
-    
+
     const [showLoader, setShowLoader] = useState(false);
     const { getItems, getItem, setItem } = useStorage();
 
@@ -46,14 +46,14 @@ const ShopPayButton = ({ variantId, quantity = 1 }) => {
 
             if (getPageData.page_id && !conversions) {
 
-              setItem({ key: 'conversions', data: true });
-              const resp = await PAGE_URL.post('/set-metrics', { page_id: getPageData.page_id, type: 'conversions' });
+                setItem({ key: 'conversions', data: true });
+                const resp = await PAGE_URL.post('/set-metrics', { page_id: getPageData.page_id, type: 'conversions' });
 
-              logger.info("===============================================>\n");
-              logger.info("CALCULATING_CONVERSIONS_ON_BUY_NOW_BUTTON\n");
-              logger.info("===============================================>\n");
-              logger.info(resp.data);
-              logger.info("===============================================>\n");
+                logger.info("===============================================>\n");
+                logger.info("CALCULATING_CONVERSIONS_ON_BUY_NOW_BUTTON\n");
+                logger.info("===============================================>\n");
+                logger.info(resp.data);
+                logger.info("===============================================>\n");
 
             }
 
@@ -79,7 +79,7 @@ const ShopPayButton = ({ variantId, quantity = 1 }) => {
 
     return (
 
-        <button onClick={handleShopPayCheckout} className={`w-full py-3 px-4 bg-pink-500 text-white rounded-lg font-medium 
+        <button onClick={handleShopPayCheckout} className={`w-full mb-3 md:mb-0 p-[0.5em] bg-pink-500 text-white rounded-lg font-medium 
             ${showLoader ? 'opacity-50 cursor-not-allowed' : 'hover:bg-pink-700 transition-colors duration-200'} disabled:opacity-50 disabled:cursor-not-allowed`}
         >
             {showLoader ? <Loader color='#ffffff' /> : 'Buy Now'}

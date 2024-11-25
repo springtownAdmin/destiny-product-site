@@ -16,7 +16,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
   useEffect(() => {
     setPaymentRequest(null);
     if (stripe) {
-      
+
       // Set up the payment request with Stripe
       const pr = stripe.paymentRequest({
         country: 'US',
@@ -65,7 +65,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
           const { data } = await SERVER_URL.post('/create-payment-intent', {
             amount: amount,       // Amount in cents
             currency: 'usd',
-            variantId:variant_id,
+            variantId: variant_id,
             productTitles: product_title,
             quantity,
           });
@@ -126,7 +126,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
             const customerName = event.payerName;
             const shippingAddress = event.shippingAddress;
             const billingAddress = event.paymentMethod.billing_details.address;
-            
+
             const newResp = await SERVER_URL.post('/create-shopify-order', {
               variant_id,
               quantity,
@@ -144,7 +144,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
             logger.info("=========================================================>\n");
 
             setTimeout(() => {
-              
+
               window.location.reload();
 
             }, 2000);
@@ -169,7 +169,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
       pr.on('shippingaddresschange', async (ev) => {
 
         if (ev.shippingAddress.country !== 'US') {
-          
+
           logger.info("=========================================================>\n");
           logger.info("SHIPPING_DETAILS_MUST_BE_(US_BASED)_ADDRESS\n");
           logger.info("=========================================================>\n");
@@ -210,7 +210,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
           }
 
         }
-        
+
       });
 
     }
@@ -218,7 +218,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
   }, [stripe, amount]);
 
   return (
-    <div>
+    <div className='w-full'>
       {isPaymentRequestAvailable && paymentRequest && (
         <PaymentRequestButtonElement
           options={{ paymentRequest }}
