@@ -5,7 +5,7 @@ import Loader from './loader';
 import { PAGE_URL } from '../../helper/constants';
 import useStorage from '../../hooks/useStorage';
 
-const ShopPayButton = ({ variantId, quantity = 1 }) => {
+const ShopPayButton = ({ variantId = '', quantity = 1 }) => {
 
     const [showLoader, setShowLoader] = useState(false);
     const { getItems, getItem, setItem } = useStorage();
@@ -26,9 +26,13 @@ const ShopPayButton = ({ variantId, quantity = 1 }) => {
             logger.info("===============================================>\n");
 
             // Add the selected variant to the checkout
+
+            const getPageData = getItems({ key: 'pageData' });
+            const vId = variantId === '' ? `gid://shopify/ProductVariant/${getPageData.variant_id}` : variantId;
+
             const lineItemsToAdd = [
                 {
-                    variantId,
+                    variantId: vId,
                     quantity: quantity,
                 },
             ];
@@ -41,7 +45,6 @@ const ShopPayButton = ({ variantId, quantity = 1 }) => {
             logger.info(updatedCheckout);
             logger.info("===============================================>\n");
 
-            const getPageData = getItems({ key: 'pageData' });
             const conversions = getItem({ key: 'conversions' });
 
             if (getPageData.page_id && !conversions) {
