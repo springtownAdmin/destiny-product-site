@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useStripe, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import { SERVER_URL, PAGE_URL } from '../../helper/constants';
+import { Dialog, DialogContent } from '@mui/material';
 import useStorage from '../../hooks/useStorage';
 import { logger } from '../../logger'
 
@@ -10,6 +11,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [isPaymentRequestAvailable, setIsPaymentRequestAvailable] = useState(false);
   const [message, setMessage] = useState('');
+  const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const { getItems, getItem, setItem } = useStorage();
 
@@ -143,6 +145,8 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
             logger.info(newResp.data);
             logger.info("=========================================================>\n");
 
+            setOpen(true);
+
             setTimeout(() => {
 
               window.location.reload();
@@ -217,19 +221,39 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
 
   }, [stripe, amount]);
 
+  const backToHome = () => {
+
+    setOpen(false);
+    window.location.reload();
+
+  }
+
   return (
     <div className='w-full'>
+
+      <Dialog open={true} fullWidth>
+          <DialogContent className='flex flex-col w-full justify-center items-center'>
+              <p className='text-4xl'>{success ? '🥳' : '😔' }</p>
+              <h1 className='text-3xl'>{success ? 'Congratulations!' : 'Sorry!'}</h1>
+              <h1 className='text-sm font-light'>
+                {success ? `Payment of ${<span className='text-green-600'>$ {amount}</span>} was done Successfully!` : 
+                `Payment of ${<span className='text-red-500'>$ {amount}</span>} was unsuccessfull!`}
+              </h1>
+              <button onClick={backToHome} className='p-3 bg-black text-white rounded-md my-3 hover:opacity-70 transition-all duration-150'>Back to home</button>
+          </DialogContent>
+      </Dialog>
+
       {isPaymentRequestAvailable && paymentRequest && (
         <PaymentRequestButtonElement
           options={{ paymentRequest }}
           style={{ paymentRequestButton: { theme: 'dark', height: '44px' } }}
         />
       )}
-      {message && (
+      {/* {message && (
         <div style={{ marginTop: '20px', color: success ? 'green' : 'red' }}>
           {message}
         </div>
-      )}
+      )} */}
     </div>
   );
 
