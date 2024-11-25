@@ -76,7 +76,7 @@ export default function ReviewSection() {
         <h2 className="text-xl font-bold">
           Reviews <span className="text-gray-500">({reviews.length})</span>
         </h2>
-        <FaChevronDown className="w-6 h-6 text-gray-400" />
+        {/* <FaChevronDown className="w-6 h-6 text-gray-400" /> */}
       </div>
 
       <div className='overflow-auto h-[450px]'>
