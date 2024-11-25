@@ -4,6 +4,7 @@ import client from './../../shopifyClient';
 import Loader from './loader';
 import { PAGE_URL } from '../../helper/constants';
 import useStorage from '../../hooks/useStorage';
+import { logger } from '../../logger';
 
 const ShopPayButton = ({ variantId = '', quantity = 1 }) => {
 
