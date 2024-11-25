@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useStripe, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
-import { SERVER_URL } from '../../helper/constants';
+import { SERVER_URL, PAGE_URL } from '../../helper/constants';
 import useStorage from '../../hooks/useStorage';
+import { logger } from '../../logger'
 
 const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id = 46075169931421 }) => {
 
@@ -13,9 +14,9 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
   const { getItems, getItem, setItem } = useStorage();
 
   useEffect(() => {
-
+    setPaymentRequest(null);
     if (stripe) {
-
+      
       // Set up the payment request with Stripe
       const pr = stripe.paymentRequest({
         country: 'US',
