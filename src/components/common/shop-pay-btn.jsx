@@ -79,7 +79,7 @@ const ShopPayButton = ({ variantId, quantity = 1 }) => {
 
     return (
 
-        <button onClick={handleShopPayCheckout} className={`w-full mb-3 md:mb-0 p-[0.5em] bg-pink-500 text-white rounded-lg font-medium 
+        <button onClick={handleShopPayCheckout} className={`w-full md:mb-3 mb-0 p-[0.5em] bg-pink-500 text-white rounded-lg font-medium 
             ${showLoader ? 'opacity-50 cursor-not-allowed' : 'hover:bg-pink-700 transition-colors duration-200'} disabled:opacity-50 disabled:cursor-not-allowed`}
         >
             {showLoader ? <Loader color='#ffffff' /> : 'Buy Now'}
