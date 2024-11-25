@@ -16,7 +16,9 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
   const { getItems, getItem, setItem } = useStorage();
 
   useEffect(() => {
+
     setPaymentRequest(null);
+
     if (stripe) {
 
       // Set up the payment request with Stripe
@@ -231,12 +233,12 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
   return (
     <div className='w-full'>
 
-      <Dialog open={true} fullWidth>
+      <Dialog open={open} fullWidth>
         <DialogContent className='flex flex-col w-full justify-center items-center'>
           <p className='text-4xl'>{success ? '🥳' : '😔'}</p>
           <h1 className='text-3xl'>{success ? 'Congratulations!' : 'Sorry!'}</h1>
-          <h1 className='text-sm font-light'>
-            {success ? <span>Payment of <span className='text-green-600'>$ {amount}</span> was done Successfully!</span> :
+          <h1 className='text-sm font-light text-center'>
+            {success ? <span>Payment of <span className='text-green-600'>$ {amount}</span> was done successfully!</span> :
               <span>Payment of <span className='text-red-500'>$ {amount}</span> was unsuccessfull!</span>}
           </h1>
           <button onClick={backToHome} className='p-3 bg-black text-white rounded-md my-3 hover:opacity-70 transition-all duration-150'>Back to home</button>
