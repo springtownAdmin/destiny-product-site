@@ -386,7 +386,7 @@ const ProductCart = (props) => {
 
                         <div className="flex justify-between items-center">
                             <h2 className="text-2xl font-serif font-bold">{product_title}</h2>
-                            <div className="text-xl font-serif font-bold text-nowrap">US ${price}</div>
+                            <div className="text-xl font-serif font-bold text-nowrap">US ${parseFloat(price).toFixed(2)}</div>
                         </div>
 
                         <p className="font-light text-justify">{description}</p>
@@ -426,7 +426,7 @@ const ProductCart = (props) => {
                                             />
                                             <span className='font-serif'>One-Time Purchase</span>
                                         </div>
-                                        <span className="font-medium font-serif">${price}</span>
+                                        <span className="font-medium font-serif">${parseFloat(price).toFixed(2)}</span>
                                     </label>
 
                                 </div>
