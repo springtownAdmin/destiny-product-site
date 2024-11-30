@@ -105,13 +105,13 @@ const ThankYou = () => {
                         <p className="text-gray-600 font-light">{orderDetails.email}</p>
                     </div>
 
-                    <div>
+                    {/* <div>
                         <h3 className="font-semibold text-gray-900 mb-2">Payment method</h3>
                         <div className="flex items-center space-x-2">
                             <FaCreditCard className="text-orange-500" />
                             <span className="text-gray-600 font-light">•••• {orderDetails.payment.last4} · ${orderDetails.payment.amount.toFixed(2)}</span>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div>
                         <h3 className="font-semibold text-gray-900 mb-2">Shipping address</h3>
