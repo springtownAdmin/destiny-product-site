@@ -22,6 +22,11 @@ const ThankYou = () => {
     const { getItems } = useStorage();
     const customerinfo = getItems({ key: 'customerinfo' });
 
+    if (customerinfo === null) {
+        navigate('/not-found');
+        return;
+    }
+
     const [emailOptIn, setEmailOptIn] = useState(false);
 
     // Mock order details - in a real app this would come from your order context/props
