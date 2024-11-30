@@ -441,7 +441,7 @@ const ProductCart = (props) => {
 
                             <div className='flex justify-center items-center gap-2 md:block w-full'>
                                 <ShopPayButton variantId={variantId} />
-                                <Payment productId={productItem} product_title={product_title} amount={parseFloat(price).toFixed(2)} variant_id={variantId} />
+                                <Payment productId={productItem} product_title={product_title} amount={parseFloat(price).toFixed(2)} variant_id={variantId} image={images[selectedImage]} />
                             </div>
 
                         </div>

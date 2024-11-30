@@ -8,12 +8,13 @@ export default function App() {
 
   return (
     <Router>
-        <Routes>
-            {/* Define a route with a dynamic parameter */}
-            <Route path="/:variantId" element={<ProductPage />} />
-            <Route path="/not-found" element={<NotFound />} />
-            <Route path="*" element={<NotFound />} />
-        </Routes>
+      <Routes>
+        {/* Define a route with a dynamic parameter */}
+        <Route path="/:variantId" element={<ProductPage />} />
+        <Route path="/not-found" element={<NotFound />} />
+        <Route path="/:confirmId/thank-you" element={<ThankYou />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </Router>
   );
 

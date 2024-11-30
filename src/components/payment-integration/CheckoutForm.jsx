@@ -4,8 +4,9 @@ import { SERVER_URL, PAGE_URL } from '../../helper/constants';
 import { Dialog, DialogContent } from '@mui/material';
 import useStorage from '../../hooks/useStorage';
 import { logger } from '../../logger'
+import { useNavigate } from 'react-router-dom';
 
-const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id = 46075169931421 }) => {
+const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id = 46075169931421, image }) => {
 
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
@@ -13,7 +14,8 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
   const [message, setMessage] = useState('');
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState(false);
-  const { getItems, getItem, setItem } = useStorage();
+  const { getItems, getItem, setItem, setItems } = useStorage();
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -141,19 +143,35 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
               event
             });
 
+            const customerinfo = {
+              variant_id: variant_id,
+              email: customerEmail,
+              name: customerName,
+              shippingAddress: shippingAddress,
+              billingAddress: billingAddress,
+              confirmationNo: newResp.data?.confirmation_number,
+              finanical_status: newResp.data?.finanical_status,
+              product_name: newResp.data?.line_items[0].name,
+              product_price: newResp.data?.line_items[0].price,
+              image: image
+            }
+
+            setItems({ key: 'customerInfo', data: customerinfo });
+
             logger.info("=========================================================>\n");
             logger.info("CREATING_SHOPIFY_ORDER_ON_APPLE_OR_GOOGLE_PAY_BUTTON\n");
             logger.info("=========================================================>\n");
             logger.info(newResp.data);
             logger.info("=========================================================>\n");
 
-            setOpen(true);
+            navigate(`/${customerinfo.confirmationNo}/thank-you`);
+            // setOpen(true);
 
-            setTimeout(() => {
+            // setTimeout(() => {
 
-              window.location.reload();
+            //   window.location.reload();
 
-            }, 2000);
+            // }, 2000);
 
 
           }
@@ -223,17 +241,17 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
 
   }, [stripe, amount]);
 
-  const backToHome = () => {
+  // const backToHome = () => {
 
-    setOpen(false);
-    window.location.reload();
+  //   setOpen(false);
+  //   window.location.reload();
 
-  }
+  // }
 
   return (
     <div className='w-full'>
 
-      <Dialog open={open} fullWidth>
+      {/* <Dialog open={open} fullWidth>
         <DialogContent className='flex flex-col w-full justify-center items-center'>
           <p className='text-4xl'>{success ? '🥳' : '😔'}</p>
           <h1 className='text-3xl'>{success ? 'Congratulations!' : 'Sorry!'}</h1>
@@ -243,7 +261,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
           </h1>
           <button onClick={backToHome} className='p-3 bg-black text-white rounded-md my-3 hover:opacity-70 transition-all duration-150'>Back to home</button>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
       {isPaymentRequestAvailable && paymentRequest && (
         <PaymentRequestButtonElement
