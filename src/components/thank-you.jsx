@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaCheckCircle, FaCreditCard, FaMapMarkerAlt } from 'react-icons/fa';
 import img1 from '../../public/images/prod-1.webp';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useStorage from '../hooks/useStorage';
 
 const ThankYou = () => {
