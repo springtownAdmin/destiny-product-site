@@ -3,6 +3,7 @@ import './App.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ProductPage from './components/product-page';
 import NotFound from './components/not-found';
+import ThankYou from './components/thank-you';
 
 export default function App() {
 
