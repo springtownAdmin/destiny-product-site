@@ -164,7 +164,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
             logger.info(newResp.data);
             logger.info("=========================================================>\n");
 
-            navigate(`/${customerinfo.confirmationNo}/thank-you`);
+            navigate(`/thank-you/${customerinfo.confirmationNo}`);
             // setOpen(true);
 
             // setTimeout(() => {

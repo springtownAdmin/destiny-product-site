@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaCheckCircle, FaCreditCard, FaMapMarkerAlt } from 'react-icons/fa';
 import img1 from '../../public/images/prod-1.webp';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,47 +8,55 @@ const ThankYou = () => {
 
     let { confirmId } = useParams();
     const navigate = useNavigate();
-
-    if (confirmId === undefined) {
-        navigate('/not-found');
-        return;
-    }
-
-    if (confirmId === null) {
-        navigate('/not-found');
-        return;
-    }
-
     const { getItems } = useStorage();
     const customerinfo = getItems({ key: 'customerinfo' });
 
-    if (customerinfo === null) {
-        navigate('/not-found');
-        return;
-    }
+    useEffect(() => {
+
+        if (confirmId === undefined) {
+            navigate('/not-found');
+            return;
+        }
+
+        if (confirmId === null) {
+            navigate('/not-found');
+            return;
+        }
+
+        if (customerinfo === null) {
+            navigate('/not-found');
+            return;
+        }
+
+        if (customerinfo?.confirmationNo !== confirmId) {
+            navigate('/not-found');
+            return;
+        }
+
+    }, []);
 
     const [emailOptIn, setEmailOptIn] = useState(false);
 
     // Mock order details - in a real app this would come from your order context/props
     const orderDetails = {
-        orderNumber: customerinfo.confirmationNo ?? "#KRUI53VL7",
-        customerName: customerinfo.name ?? "John Doe",
-        email: customerinfo.email ?? "john.doe@example.com",
+        orderNumber: customerinfo?.confirmationNo ?? "#KRUI53VL7",
+        customerName: customerinfo?.name ?? "John Doe",
+        email: customerinfo?.email ?? "john.doe@example.com",
         shippingAddress: {
-            name: customerinfo.name ?? "John Doe",
-            street: customerinfo.shippingAddress?.line1 || customerinfo.shippingAddress?.addressLine?.[0],
-            city: customerinfo.shippingAddress?.city ?? 'N/A',
-            state: customerinfo.shippingAddress?.region || customerinfo?.shippingAddress.state,
-            zip: customerinfo.shippingAddress?.postalCode || customerinfo.shippingAddress?.postal_code,
-            country: customerinfo.shippingAddress?.country ?? "N/A"
+            name: customerinfo?.name ?? "John Doe",
+            street: customerinfo?.shippingAddress?.line1 || customerinfo?.shippingAddress?.addressLine?.[0],
+            city: customerinfo?.shippingAddress?.city ?? 'N/A',
+            state: customerinfo?.shippingAddress?.region || customerinfo?.shippingAddress?.state,
+            zip: customerinfo?.shippingAddress?.postalCode || customerinfo?.shippingAddress?.postal_code,
+            country: customerinfo?.shippingAddress?.country ?? "N/A"
         },
         billingAddress: {
-            name: customerinfo.name ?? "John Doe",
-            street: customerinfo.shippingAddress?.line1 || customerinfo.shippingAddress?.addressLine?.[0],
-            city: customerinfo.shippingAddress?.city ?? 'N/A',
-            state: customerinfo.shippingAddress?.region || customerinfo?.shippingAddress.state,
-            zip: customerinfo.shippingAddress?.postalCode || customerinfo.shippingAddress?.postal_code,
-            country: customerinfo.shippingAddress?.country ?? "N/A"
+            name: customerinfo?.name ?? "John Doe",
+            street: customerinfo?.shippingAddress?.line1 || customerinfo?.shippingAddress?.addressLine?.[0],
+            city: customerinfo?.shippingAddress?.city ?? 'N/A',
+            state: customerinfo?.shippingAddress?.region || customerinfo?.shippingAddress?.state,
+            zip: customerinfo?.shippingAddress?.postalCode || customerinfo?.shippingAddress?.postal_code,
+            country: customerinfo?.shippingAddress?.country ?? "N/A"
         },
         payment: {
             method: "Mastercard",
@@ -58,10 +66,10 @@ const ThankYou = () => {
         items: [
             {
                 id: 1,
-                name: customerinfo.product_name ?? 'N/A',
+                name: customerinfo?.product_name ?? 'N/A',
                 quantity: 1,
-                price: customerinfo.price,
-                image: customerinfo.image ?? img1
+                price: customerinfo?.price,
+                image: customerinfo?.image ?? img1
             }
         ],
         shipping: 4.90
@@ -155,7 +163,7 @@ const ThankYou = () => {
                             </div>
                             <div className="flex-grow">
                                 <p className="text-gray-900">{item.name}</p>
-                                <p className="text-gray-600">${item.price.toFixed(2)}</p>
+                                <p className="text-gray-600">${item.price?.toFixed(2)}</p>
                             </div>
                         </div>
                     ))}
@@ -163,15 +171,15 @@ const ThankYou = () => {
                     <div className="mt-6 space-y-2">
                         <div className="flex justify-between text-gray-600">
                             <span>Subtotal</span>
-                            <span>${(orderDetails.payment.amount - orderDetails.shipping).toFixed(2)}</span>
+                            <span>${(orderDetails.payment.amount - orderDetails.shipping)?.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-gray-600">
                             <span>Shipping</span>
-                            <span>${orderDetails.shipping.toFixed(2)}</span>
+                            <span>${orderDetails.shipping?.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-gray-900 font-semibold text-lg pt-2 border-t border-gray-200">
                             <span>Total</span>
-                            <span>USD ${orderDetails.payment.amount.toFixed(2)}</span>
+                            <span>USD ${orderDetails.payment.amount?.toFixed(2)}</span>
                         </div>
                     </div>
                 </div>

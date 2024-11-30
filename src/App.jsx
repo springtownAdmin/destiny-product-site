@@ -13,7 +13,7 @@ export default function App() {
         {/* Define a route with a dynamic parameter */}
         <Route path="/:variantId" element={<ProductPage />} />
         <Route path="/not-found" element={<NotFound />} />
-        <Route path="/:confirmId/thank-you" element={<ThankYou />} />
+        <Route path="/thank-you/:confirmId" element={<ThankYou />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

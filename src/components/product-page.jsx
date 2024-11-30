@@ -43,15 +43,15 @@ export default function ProductPage() {
           logger.info("===============================================>\n");
           logger.info(result);
           logger.info("===============================================>\n");
-  
+
           if (result.data === null) {
-              navigate('/not-found'); // Redirect to "Not Found" page
-              return;
+            navigate('/not-found'); // Redirect to "Not Found" page
+            return;
           }
 
           setPageData(result.data);
           setItems({ key: 'pageData', data: result.data });
-  
+
           const uid = uuidv4();
           setItem({ key: 'uid', data: uid });
 
@@ -65,16 +65,19 @@ export default function ProductPage() {
 
           if (resp2.data.result.data === null)
             clearAll();
-  
+
 
         } else {
-          
-          setPageData(getPageData);
+
+          if (variantId === getPageData.variant_id)
+            setPageData(getPageData);
+          else
+            navigate('/not-found');
 
         }
 
       } catch (e) {
-  
+
         toast.error('Something went wrong!');
         console.log(e.message);
         logger.info("===============================================>\n");
@@ -82,12 +85,12 @@ export default function ProductPage() {
         logger.info("===============================================>\n");
         logger.error(e.message);
         logger.info("===============================================>\n");
-  
+
       } finally {
 
-          setTimeout(() => {
-            setShowLoader(false);
-          }, getItem('uid') ? 0 : 500);
+        setTimeout(() => {
+          setShowLoader(false);
+        }, getItem('uid') ? 0 : 500);
 
       }
 
@@ -98,7 +101,7 @@ export default function ProductPage() {
     //     return;
     // }
 
-      setPageDataToSite();
+    setPageDataToSite();
 
   }, []);
 
@@ -106,9 +109,9 @@ export default function ProductPage() {
 
     <MainLoader show={showLoader}>
 
-        {pageData !== null ? <div className='relative w-full'><ProductCart { ...pageData } /></div> : <PleaseWait />}
+      {pageData !== null ? <div className='relative w-full'><ProductCart {...pageData} /></div> : <PleaseWait />}
 
-        <ToastContainer />
+      <ToastContainer />
 
     </MainLoader>
 
