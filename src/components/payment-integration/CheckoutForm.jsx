@@ -143,18 +143,29 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
               event
             });
 
+            // logger.info("=========================================================>\n");
+            // logger.info("Response of '/create-shopify-order' - \n");
+            // logger.info(newResp.data);
+            // logger.info("=========================================================>\n");
+
             const customerinfo = {
               variant_id: variant_id,
               email: customerEmail,
               name: customerName,
               shippingAddress: shippingAddress,
               billingAddress: billingAddress,
-              confirmationNo: newResp.data?.confirmation_number,
-              finanical_status: newResp.data?.finanical_status,
-              product_name: newResp.data?.line_items[0].name,
-              product_price: newResp.data?.line_items[0].price,
+              confirmationNo: newResp.data?.order?.confirmation_number ?? '123',
+              finanical_status: newResp.data?.order?.finanical_status,
+              product_name: newResp.data?.order?.line_items[0]?.name ?? 'Dummy Product',
+              product_price: newResp.data?.order?.line_items[0]?.price ?? '1.00',
               image: image
             }
+
+            logger.info("==========================================================>")
+            logger.info("customerinfo log:- ")
+            logger.info("==========================================================>")
+            logger.info(customerinfo);
+            // alert(variant_id);
 
             setItems({ key: 'customerInfo', data: customerinfo });
 
@@ -164,6 +175,7 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
             logger.info(newResp.data);
             logger.info("=========================================================>\n");
 
+            // navigate(`/thank-you/${customerinfo.confirmationNo}`);
             navigate(`/thank-you/${customerinfo.confirmationNo}`);
             // setOpen(true);
 
@@ -241,6 +253,59 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
 
   }, [stripe, amount]);
 
+  const handlePayNow = async () => {
+
+    try {
+
+      const resp = await SERVER_URL.post('/test-order');
+      console.log(resp.data);
+
+      const customerinfo = {
+        variant_id: "gid://shopify/ProductVariant/46075169931421",
+        email: "johndoe@gmail.com",
+        name: "John Doe",
+        shippingAddress: {
+          addressLine: [
+            "104 Washington Place",
+            "Apt 3"
+          ],
+          city: "New York",
+          country: "US",
+          dependentLocality: "",
+          organization: "",
+          phone: "",
+          postalCode: "10014",
+          recipient: "John Doe",
+          region: "NY",
+          sortingCode: ""
+        },
+        billingAddress: {
+          city: "Marina De La Rey",
+          country: "US",
+          line1: "116 Buccaneer St",
+          line2: "A",
+          postal_code: "90292",
+          state: "CA"
+        },
+        confirmationNo: "RAGYIPEI2",
+        finanical_status: "paid",
+        product_name: "blue shirt",
+        product_price: "1.00",
+        image: image
+      }
+
+      setItems({ key: 'customerInfo', data: customerinfo });
+
+      navigate(`/thank-you/${customerinfo.confirmationNo}`);
+
+    } catch (e) {
+
+      console.log(e.message);
+
+    }
+
+  }
+
   // const backToHome = () => {
 
   //   setOpen(false);
@@ -269,11 +334,9 @@ const CheckoutForm = ({ amount = 0.01, product_title, quantity = 1, variant_id =
           style={{ paymentRequestButton: { theme: 'dark', height: '44px' } }}
         />
       )}
-      {/* {message && (
-        <div style={{ marginTop: '20px', color: success ? 'green' : 'red' }}>
-          {message}
-        </div>
-      )} */}
+
+      {/* <button className='bg-black p-3 rounded-md' onClick={handlePayNow}>Pay Now</button> */}
+
     </div>
   );
 

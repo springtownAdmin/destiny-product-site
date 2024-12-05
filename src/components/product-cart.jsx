@@ -5,6 +5,7 @@ import { TbExternalLink } from "react-icons/tb";
 import Payment from './payment-integration/Payment';
 import { ShopPayButton } from './common';
 import ReviewSection from './reviews';
+import { FaStar, FaStarHalf } from 'react-icons/fa6';
 
 const BackDrop = ({ isOpen, setIsOpen }) => {
 
@@ -387,6 +388,19 @@ const ProductCart = (props) => {
                         <div className="flex justify-between items-center">
                             <h2 className="text-2xl font-serif font-bold">{product_title}</h2>
                             <div className="text-xl font-serif font-bold text-nowrap">US ${parseFloat(price).toFixed(2)}</div>
+                        </div>
+
+                        <div className='flex gap-3 items-center'>
+                            <div className='flex gap-1 items-center'>
+                                <FaStar key={`review-star-1`} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                <FaStar key={`review-star-2`} className="w-4 h-4 fill-yellow-400 text-yellow-4000" />
+                                <FaStar key={`review-star-3`} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                <FaStar key={`review-star-4`} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                <FaStarHalf key={`review-star-5`} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                            </div>
+                            <div className='font-serif text-md font-bold'>
+                                1972 Reviews
+                            </div>
                         </div>
 
                         <p className="font-light text-justify">{description}</p>

@@ -9,7 +9,7 @@ const ThankYou = () => {
     let { confirmId } = useParams();
     const navigate = useNavigate();
     const { getItems } = useStorage();
-    const customerinfo = getItems({ key: 'customerinfo' });
+    const customerinfo = getItems({ key: 'customerInfo' });
 
     useEffect(() => {
 
@@ -37,6 +37,8 @@ const ThankYou = () => {
 
     const [emailOptIn, setEmailOptIn] = useState(false);
 
+    console.log(customerinfo);
+
     // Mock order details - in a real app this would come from your order context/props
     const orderDetails = {
         orderNumber: customerinfo?.confirmationNo ?? "#KRUI53VL7",
@@ -52,23 +54,23 @@ const ThankYou = () => {
         },
         billingAddress: {
             name: customerinfo?.name ?? "John Doe",
-            street: customerinfo?.shippingAddress?.line1 || customerinfo?.shippingAddress?.addressLine?.[0],
-            city: customerinfo?.shippingAddress?.city ?? 'N/A',
-            state: customerinfo?.shippingAddress?.region || customerinfo?.shippingAddress?.state,
-            zip: customerinfo?.shippingAddress?.postalCode || customerinfo?.shippingAddress?.postal_code,
-            country: customerinfo?.shippingAddress?.country ?? "N/A"
+            street: customerinfo?.billingAddress?.line1 || customerinfo?.shippingAddress?.addressLine?.[0],
+            city: customerinfo?.billingAddress?.city ?? 'N/A',
+            state: customerinfo?.billingAddress?.region || customerinfo?.shippingAddress?.state,
+            zip: customerinfo?.billingAddress?.postalCode || customerinfo?.shippingAddress?.postal_code,
+            country: customerinfo?.billingAddress?.country ?? "N/A"
         },
         payment: {
             method: "Mastercard",
             last4: "6433",
-            amount: 4.91
+            amount: parseInt(customerinfo?.product_price, 10)
         },
         items: [
             {
                 id: 1,
                 name: customerinfo?.product_name ?? 'N/A',
                 quantity: 1,
-                price: customerinfo?.price,
+                price: parseInt(customerinfo?.product_price, 10),
                 image: customerinfo?.image ?? img1
             }
         ],
@@ -169,15 +171,16 @@ const ThankYou = () => {
                     ))}
 
                     <div className="mt-6 space-y-2">
-                        <div className="flex justify-between text-gray-600">
+                        {/* <div className="flex justify-between text-gray-600">
                             <span>Subtotal</span>
                             <span>${(orderDetails.payment.amount - orderDetails.shipping)?.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-gray-600">
                             <span>Shipping</span>
                             <span>${orderDetails.shipping?.toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between text-gray-900 font-semibold text-lg pt-2 border-t border-gray-200">
+                        </div> */}
+                        {/* <div className="flex justify-between text-gray-900 font-semibold text-lg pt-2 border-t border-gray-200"> */}
+                        <div className="flex justify-between text-gray-900 font-semibold text-lg pt-2 border-gray-200">
                             <span>Total</span>
                             <span>USD ${orderDetails.payment.amount?.toFixed(2)}</span>
                         </div>
