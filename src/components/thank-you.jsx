@@ -182,7 +182,7 @@ const ThankYou = () => {
                         {/* <div className="flex justify-between text-gray-900 font-semibold text-lg pt-2 border-t border-gray-200"> */}
                         <div className="flex justify-between text-gray-900 font-semibold text-lg pt-2 border-gray-200">
                             <span>Total</span>
-                            <span>USD ${orderDetails.payment.amount?.toFixed(2)}</span>
+                            <span>${orderDetails.payment.amount?.toFixed(2)}</span>
                         </div>
                     </div>
                 </div>

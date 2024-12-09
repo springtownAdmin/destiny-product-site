@@ -465,10 +465,9 @@ const ProductCart = (props) => {
 
                 </div>
 
-                <ReviewSection />
-
-
             </main>
+
+            <ReviewSection />
 
             <Footer />
 
