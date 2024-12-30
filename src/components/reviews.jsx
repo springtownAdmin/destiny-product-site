@@ -123,12 +123,12 @@ export default function ReviewSection() {
     <div className="w-full container mx-auto bg-white mt-3">
       <div className="flex items-center justify-between p-4 border-b">
         <h2 className="text-xl font-bold">
-          Reviews <span className="text-gray-500">({reviews.length})</span>
+          Reviews <span className="text-gray-500">(5,705)</span>
         </h2>
         {/* <FaChevronDown className="w-6 h-6 text-gray-400" /> */}
       </div>
 
-      <div className='overflow-auto h-[450px]'>
+      <div className=''>
         {reviews.map((review) => (
           <ReviewCard key={review.id} review={review} />
         ))}

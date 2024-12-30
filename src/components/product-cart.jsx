@@ -387,7 +387,7 @@ const ProductCart = (props) => {
 
                         <div className="flex w-full justify-between items-center">
                             <h2 className="md:text-2xl w-[60%] text-xl font-serif font-bold">{product_title}</h2>
-                            <div className="text-xl w-[40%] font-serif font-bold text-nowrap">${parseFloat(price).toFixed(2)}</div>
+                            <div className="text-xl w-[40%] font-serif font-bold text-nowrap text-right">${parseFloat(price).toFixed(2)}</div>
                         </div>
 
                         <div className='flex gap-3 items-center'>
