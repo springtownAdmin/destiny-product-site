@@ -6,6 +6,7 @@ import Payment from './payment-integration/Payment';
 import { ShopPayButton } from './common';
 import ReviewSection from './reviews';
 import { FaStar, FaStarHalf } from 'react-icons/fa6';
+import { Template01, Template02 } from './templates';
 
 const BackDrop = ({ isOpen, setIsOpen }) => {
 
@@ -159,17 +160,12 @@ const SideBarRight = (props) => {
 
                     {/* Tab Content */}
                     <div className="space-y-4">
-                        {activeTab === 'description' ? (
-                            <p className="text-gray-600 font-light">{description}</p>
-                        ) : (
-                            <p className="text-gray-600 font-light">Ingredients information coming soon...</p>
-                        )}
+                        {activeTab === 'description' ? (<p className="text-gray-600 font-light">{description}</p>) 
+                        : (<p className="text-gray-600 font-light">Ingredients information coming soon...</p>)}
                     </div>
 
                     {/* Add to Cart Button */}
-                    <button className="w-full py-3 px-4 bg-pink-500 text-white rounded-lg font-medium 
-                        hover:bg-pink-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
+                    <button className="w-full py-3 px-4 bg-pink-500 text-white rounded-lg font-medium hover:bg-pink-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
                         Add to cart
                     </button>
 
@@ -321,11 +317,27 @@ const ProductCart = (props) => {
     }
 
     return (
+
+        <div className="min-h-screen bg-white relative overflow-x-hidden scrollbar-hide">
+            <Template01 
+                announcement={announcement}
+                tagline={tagline}
+                sub_title={sub_title}
+                images={images}
+                product_title={product_title}
+                price={price}
+                description={description}
+                variantId={variantId}
+                productItem={productItem}
+            />
+        </div>
+
+    )
+
+    return (
         <div className="min-h-screen bg-white relative overflow-x-hidden scrollbar-hide">
 
             <BackDrop isOpen={isOpen} setIsOpen={setIsOpen} />
-
-            {/* <BackDrop isOpen={isOpen2} setIsOpen={setIsOpen2} /> */}
 
             <SideBarRight product_title={product_title} description={description} price={price} isOpen={isOpen} setIsOpen={setIsOpen} images={images} selectedImage2={selectedImage2} setSelectedImage2={setSelectedImage2} activeTab={activeTab} setActiveTab={setActiveTab} purchaseOption2={purchaseOption2} setPurchaseOption2={setPurchaseOption2} />
 
@@ -371,11 +383,7 @@ const ProductCart = (props) => {
                                         ${selectedImage === index ? 'border-[#e75d8e]' : 'border-gray-200'}`}
                                     aria-label={`View product image ${index + 1}`}
                                 >
-                                    <img
-                                        src={image}
-                                        alt={`Product view ${index + 1}`}
-                                        className="object-cover"
-                                    />
+                                    <img src={image} alt={`Product view ${index + 1}`} className="object-cover" />
                                 </button>
                             ))}
                         </div>
