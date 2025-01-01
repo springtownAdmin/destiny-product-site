@@ -319,7 +319,7 @@ const ProductCart = (props) => {
     return (
 
         <div className="min-h-screen bg-white relative overflow-x-hidden scrollbar-hide">
-            <Template01 
+            <Template02 
                 announcement={announcement}
                 tagline={tagline}
                 sub_title={sub_title}
